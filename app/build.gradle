@@ -7,71 +7,68 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion Versions.compile_sdk
+    compileSdkVersion 28
+
     defaultConfig {
-        applicationId ApplicationId.application_id
-        minSdkVersion Versions.min
-        targetSdkVersion Versions.target_sdk
-        versionCode Releases.version_code
-        versionName Releases.version_name
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId "com.yipl.label_step"
+        minSdkVersion 17
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    kapt { generateStubs = true}
+
     dataBinding {
         enabled = true
-    }
-//
-//    defaultConfig {
-//        multiDexEnabled true
-//    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    api Libraries.kotlin_stdlib
-    //noinspection GradleCompatible
-    implementation SupportLibraries.appcompat
-    implementation SupportLibraries.constraint_layout
-    implementation SupportLibraries.design
-    testImplementation TestLibraries.junit
-    androidTestImplementation TestLibraries.support_test
-    androidTestImplementation TestLibraries.espresso
-    implementation Libraries.room
-    kapt Libraries.room_compiler
-    implementation Libraries.lifecycle
-    api Libraries.stetho
-//    kapt Libraries.databinding_compiler
-    implementation Libraries.glide
-    annotationProcessor Libraries.glide_compiler
-    api Libraries.dagger
-    api Libraries.dagger_support // if you use the support libraries
-    annotationProcessor Libraries.dagger_android_processor
-    api Libraries.retrofit
-    api Libraries.gson
-    implementation Libraries.logginginterceptor
-    implementation Libraries.rxjava
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutineVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutineVersion"
 
-    implementation Libraries.rxkotlin
-    implementation Libraries.rxandroid
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
+    implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintLayoutVersion}"
+    implementation "com.google.android.material:material:${rootProject.ext.designLibraryVersion}"
 
-    api Libraries.retrofit_adapter
-    implementation Libraries.dagger_android
-    kapt Libraries.dagger_android_processor
+    implementation "androidx.room:room-runtime:${rootProject.ext.roomVersion}"
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    kapt "androidx.room:room-compiler:${rootProject.ext.roomVersion}"
+
+    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.ext.lifecycleVersion}"
+
+    implementation "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
+    kapt "com.github.bumptech.glide:compiler:${rootProject.ext.glideVersion}"
+
+    implementation "com.google.dagger:dagger-android:${rootProject.ext.daggerVersion}"
+    implementation "com.google.dagger:dagger-android:${rootProject.ext.daggerVersion}"
+    implementation "com.google.dagger:dagger-android-support:${rootProject.ext.daggerVersion}"
+    kapt "com.google.dagger:dagger-android-processor:${rootProject.ext.daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
+
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${rootProject.ext.retrofitAdapterVersion}"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${rootProject.ext.coroutineRetrofitAdapterVersion}"
+
+    implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.ext.loggingInterceptorVersion}"
+
+    testImplementation "junit:junit:${rootProject.ext.junitVersion}"
+    androidTestImplementation "com.android.support.test:runner:${rootProject.ext.supportTestVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.espressoVersion}"
+
+    implementation "com.facebook.stetho:stetho:${rootProject.ext.stethoVersion}"
+
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
-    kapt 'com.google.dagger:dagger-compiler:2.14.1'
-//    implementation "com.github.leonardoxh:retrofit2-livedata-adapter:1.1.2"
     implementation 'com.jakewharton.timber:timber:4.7.0'
-
-
 }

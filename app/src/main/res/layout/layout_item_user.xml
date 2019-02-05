@@ -5,9 +5,9 @@
 <data>
     <variable
         name="viewModel"
-        type="com.yipl.labelstep.ui.PostViewModel"/>
+        type="com.yipl.labelstep.ui.post.PostViewModel"/>
 </data>
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:padding="10dp"
         android:layout_height="wrap_content">
@@ -41,5 +41,5 @@
             android:background="#000"/>
 
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
