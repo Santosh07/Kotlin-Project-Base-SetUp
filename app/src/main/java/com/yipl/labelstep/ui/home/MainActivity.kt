@@ -2,8 +2,10 @@ package com.yipl.labelstep.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract
 
 import android.util.Log
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -25,35 +27,22 @@ class MainActivity : BaseActivity() {
 
     @Inject lateinit var appPreferences: AppPreferences
 
-    override fun isDataBindingEnabled(): Boolean {
-        return true
-    }
-
-    override fun getLayout(): Int {
-        return R.layout.activity_main
-    }
-
-    fun  getBinding(): ActivityMainBinding {
-        return binding as ActivityMainBinding
-    }
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appPreferences.example = "Test"
 
         val mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(MainActivityViewModel::class.java)
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         binding.setLifecycleOwner(this)
-        getBinding().viewModel = mainActivityViewModel
-        val adapter = getBinding().recyclerview.setUpBinding<Post, LayoutItemUserBinding>(
+        binding.viewModel = mainActivityViewModel
+
+        val adapter = binding.recyclerview.setUpBinding<Post, LayoutItemUserBinding>(
                 R.layout.layout_item_user,
                 { post -> this.post = post })
 
-        getBinding().buttonGetdata.setOnClickListener{
+        binding.buttonGetdata.setOnClickListener{
             Log.e("MainActivity",appPreferences.example)
             mainActivityViewModel.getPosts()
         }

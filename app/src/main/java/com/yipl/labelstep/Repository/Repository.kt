@@ -18,7 +18,6 @@ class Repository
     suspend fun getPosts() = coroutineScope {
         var posts = emptyList<PostEntity>()
 
-
         try {
             withContext(Dispatchers.IO) { posts = apiService.getPosts().await() }
         } catch (e: Exception) {
