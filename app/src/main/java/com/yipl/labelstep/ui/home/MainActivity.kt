@@ -4,13 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 
 import android.util.Log
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.aabumu.genericadapter.usingbinding.GenericAdapter
+import com.aabumu.genericadapter.usingbinding.setUpBinding
 import com.yipl.labelstep.R
 import com.yipl.labelstep.ui.base.BaseActivity
 import com.yipl.labelstep.ui.AppPreferences
 import com.yipl.labelstep.databinding.ActivityMainBinding
+import com.yipl.labelstep.databinding.LayoutItemUserBinding
+import com.yipl.labelstep.db.model.Post
 import com.yipl.labelstep.ui.post.PostActivity
+import com.yipl.labelstep.ui.post.PostViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
@@ -34,7 +40,6 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appPreferences.example = "Test"
@@ -44,8 +49,9 @@ class MainActivity : BaseActivity() {
 
         binding.setLifecycleOwner(this)
         getBinding().viewModel = mainActivityViewModel
-
-        getBinding().recyclerview.adapter = ListsAdapter(this)
+        val adapter = getBinding().recyclerview.setUpBinding<Post, LayoutItemUserBinding>(
+                R.layout.layout_item_user,
+                { post -> this.post = post })
 
         getBinding().buttonGetdata.setOnClickListener{
             Log.e("MainActivity",appPreferences.example)
@@ -56,6 +62,10 @@ class MainActivity : BaseActivity() {
             startActivity(Intent(this, PostActivity::class.java))
             finish()
         }
+
+        mainActivityViewModel.posts.observe(this, Observer {
+            adapter.setItem(it)
+        })
     }
 }
 

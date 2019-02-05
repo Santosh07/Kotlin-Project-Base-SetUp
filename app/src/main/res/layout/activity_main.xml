@@ -18,18 +18,16 @@
             android:id="@+id/button_getdata"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Get data"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="Get data"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            app:data="@{viewModel.posts}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/button_getdata"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_height="wrap_content" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/button_gotopost"

@@ -18,5 +18,4 @@ class AppPreferences @Inject constructor(application: Application) {
     var example: String
         get() = preferences.getString(Preference.EXAMPLE_DATA, "Error")
         set(data) = preferences.edit().putString(Preference.EXAMPLE_DATA, data).apply()
-
 }
