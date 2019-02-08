@@ -4,7 +4,7 @@ import io.reactivex.Observable
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 
-interface ApiService {
+interface ApiClient {
 
     @GET("/posts")
     fun getPosts(): Deferred<List<PostEntity>>

@@ -7,5 +7,5 @@ import com.yipl.labelstep.db.model.PostEntity
 
 @Database(entities = arrayOf(PostEntity::class),version = 1, exportSchema = false)
 abstract class LabelDatabase: RoomDatabase(){
-    abstract fun daoAccess() : PostDao
+    abstract fun postDao() : PostDao
 }
