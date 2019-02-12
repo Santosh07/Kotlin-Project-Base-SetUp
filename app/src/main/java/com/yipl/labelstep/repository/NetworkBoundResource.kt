@@ -1,39 +1,35 @@
 package com.yipl.labelstep.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 
-abstract class NetworkBoundResource<DBDataModel, RetrofitDataModel> {
+abstract class NetworkBoundResource<DBDataModel, RetrofitDataModel>: CoroutineScope {
 
-    private val result = MutableLiveData<ResultOrErrorWrapper<DBDataModel>>()
+    val results = Channel<ResultOrErrorWrapper<DBDataModel>>()
 
     suspend fun start():  NetworkBoundResource<DBDataModel, RetrofitDataModel> {
-        result.value = ResultOrErrorWrapper.error("Fetching Data From DB", null)
-        coroutineScope {
-            val mediator =  MediatorLiveData<List<DBDataModel>>()
-            val source = fetchDataFromDB()
-            mediator.addSource(source, Observer {
-                mediator.removeSource(source)
-            })
 
-            if (isDataFromNWRequired()) {
-                fetchDataFromNW()
-            } else {
-                //result.value = ResultOrErrorWrapper.success(data)
-            }
+        results.send(ResultOrErrorWrapper.error("Fetching Data From DB", null))
+
+        val dataFromDB = fetchDataFromDB()
+
+        results.send(ResultOrErrorWrapper.error("DB Fetch Complete", null))
+
+        if (isDataFromNWRequired(dataFromDB)) {
+            results.send(ResultOrErrorWrapper.error("Fetching Data From NW", null))
+
+            fetchDataFromNW()
+        } else {
+            results.send(ResultOrErrorWrapper.error("NW Fetch Not Required", dataFromDB))
+
         }
 
         return this
     }
 
-    fun asLiveData() = result as LiveData<ResultOrErrorWrapper<DBDataModel>>
+    abstract suspend fun fetchDataFromDB(): DBDataModel
 
-    abstract suspend fun fetchDataFromDB(): LiveData<DBDataModel>
-
-    abstract fun isDataFromNWRequired(): Boolean
+    abstract fun isDataFromNWRequired(dbDataModel: DBDataModel): Boolean
 
     abstract fun createNWCall(): Deferred<RetrofitDataModel>
 
@@ -47,13 +43,10 @@ abstract class NetworkBoundResource<DBDataModel, RetrofitDataModel> {
 
                 processDownloadedData(result)
             }
-            result.value = ResultOrErrorWrapper.error("Data Fetch Successful", null)
+
+            results.send(ResultOrErrorWrapper.error("Data Fetch from NW Successful", null))
         } catch (e: Exception) {
-            result.value = ResultOrErrorWrapper.error(e.message ?: "Error Message not set", null)
+            results.send(ResultOrErrorWrapper.error(e.message ?: "Error Message not set", null))
         }
-
-        //set end result for success
-
-        //set end result for failure
     }
 }

@@ -40,9 +40,11 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintLayoutVersion}"
     implementation "com.google.android.material:material:${rootProject.ext.designLibraryVersion}"
 
-    implementation "androidx.room:room-runtime:${rootProject.ext.roomVersion}"
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+
+    implementation "androidx.room:room-runtime:${rootProject.ext.roomVersion}"
+    implementation "androidx.room:room-coroutines:${rootProject.ext.roomVersion}"
     kapt "androidx.room:room-compiler:${rootProject.ext.roomVersion}"
 
     implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.ext.lifecycleVersion}"
