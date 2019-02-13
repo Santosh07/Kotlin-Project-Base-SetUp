@@ -1,16 +1,20 @@
 package com.yipl.labelstep.ui.home
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.ContactsContract
 
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.aabumu.genericadapter.usingbinding.GenericAdapter
 import com.aabumu.genericadapter.usingbinding.setUpBinding
+import com.google.android.material.snackbar.Snackbar
 import com.yipl.labelstep.R
 import com.yipl.labelstep.ui.base.BaseActivity
 import com.yipl.labelstep.ui.AppPreferences
@@ -54,6 +58,27 @@ class MainActivity : BaseActivity() {
 
         mainActivityViewModel.posts.observe(this, Observer {
             adapter.setItem(it)
+        })
+
+        mainActivityViewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        })
+
+        mainActivityViewModel.uiState.observe(this, Observer {
+            when (it) {
+                UIState.LOADING -> {
+                    binding.recyclerview.visibility = View.INVISIBLE
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                UIState.SUCCESS ->  {
+                    binding.recyclerview.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.INVISIBLE
+                }
+                UIState.ERROR -> {
+                    binding.recyclerview.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.INVISIBLE
+                }
+            }
         })
     }
 }

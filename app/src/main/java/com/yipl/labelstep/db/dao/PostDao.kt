@@ -1,6 +1,5 @@
 package com.yipl.labelstep.db.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -11,9 +10,8 @@ import com.yipl.labelstep.db.model.PostEntity
 @Dao
 interface PostDao{
     @Query("SELECT * from post")
-    fun selectAll() : LiveData<List<Post>>
+    suspend fun selectAll() : List<Post>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPosts(post: PostEntity)
-
+    suspend fun insertPosts(post: PostEntity)
 }
