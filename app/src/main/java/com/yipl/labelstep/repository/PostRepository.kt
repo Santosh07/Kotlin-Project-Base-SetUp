@@ -24,10 +24,6 @@ class PostRepository
                 return dbDataModel.isNullOrEmpty()
             }
 
-//            override fun isDataFromNWRequired(): Boolean {
-//                return true
-//            }
-
             override fun createNWCall(): Deferred<List<PostEntity>> {
               return apiClient.getPosts()
             }
